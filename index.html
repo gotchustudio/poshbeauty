@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Posh Beauty Studio | An Editorial Beauty Experience in Kathmandu</title>
+<meta name="description" content="Posh Beauty Studio — a cinematic beauty experience in Mahaboudha, Kathmandu. Makeup, hair artistry and personalized styling, crafted with editorial precision.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+/* ============================================================
+   TOKENS — Rose Gold / Champagne / Ivory editorial palette
+   ============================================================ */
+:root{
+  --ivory:#FBF6EF;
+  --pearl:#FFFDFB;
+  --blush:#F4E8E4;
+  --beige:#EFE3D2;
+  --rose-gold:#BD8890;
+  --rose-gold-deep:#96606A;
+  --champagne:#D8BE8E;
+  --champagne-deep:#B99457;
+  --charcoal:#2A2521;
+  --charcoal-soft:#726A63;
+  --glass:rgba(255,253,250,0.55);
+  --glass-border:rgba(255,255,255,0.7);
+  --shadow-soft:0 30px 80px -30px rgba(150,96,106,0.35);
+  --shadow-deep:0 40px 110px -30px rgba(42,37,33,0.28);
+  --ease-lux:cubic-bezier(0.22,1,0.36,1);
+  --ease-slow:cubic-bezier(0.16,1,0.3,1);
+  --font-display:'Cormorant Garamond', serif;
+  --font-body:'Jost', sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  background:var(--ivory);
+  color:var(--charcoal);
+  overflow-x:clip;
+  font-weight:300;
+  -webkit-font-smoothing:antialiased;
+  cursor:default;
+}
+img{max-width:100%;display:block;}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+button{font-family:inherit;border:none;background:none;cursor:pointer;}
+::selection{background:var(--rose-gold-deep);color:#fff;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+}
+
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;line-height:0.98;letter-spacing:0.005em;}
+p{line-height:1.9;}
+.eyebrow{
+  font-family:var(--font-body);
+  font-size:0.7rem;
+  letter-spacing:0.42em;
+  text-transform:uppercase;
+  color:var(--rose-gold-deep);
+  display:inline-flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:26px;
+}
+.eyebrow::before{content:'';width:44px;height:1px;background:var(--champagne-deep);display:inline-block;}
+.container{max-width:1360px;margin:0 auto;padding:0 6vw;}
+.container-wide{max-width:1600px;margin:0 auto;padding:0 4vw;}
+section{position:relative;}
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{
+  outline:2px solid var(--champagne-deep); outline-offset:4px;
+}
+
+/* ============ ORGANIC / MORPHING BLOB DECOR ============ */
+.blob{
+  position:absolute; pointer-events:none; z-index:0; filter:blur(50px); opacity:0.55;
+  border-radius:58% 42% 38% 62% / 55% 40% 60% 45%;
+  animation:blobmorph 14s ease-in-out infinite;
+}
+@keyframes blobmorph{
+  0%,100%{ border-radius:58% 42% 38% 62% / 55% 40% 60% 45%; }
+  33%{ border-radius:42% 58% 62% 38% / 40% 62% 38% 60%; }
+  66%{ border-radius:65% 35% 48% 52% / 48% 55% 45% 52%; }
+}
+
+/* organic section wave dividers */
+.wave{ position:absolute; left:0; right:0; width:100%; line-height:0; z-index:2; pointer-events:none; }
+.wave svg{ width:100%; height:auto; display:block; }
+.wave.top{ top:-1px; }
+.wave.bottom{ bottom:-1px; transform:scaleY(-1); }
+
+/* ============ TEXT SPLIT / REVEAL ============ */
+.split-word{ display:inline-block; overflow:hidden; vertical-align:top; }
+.split-word span{ display:inline-block; will-change:transform, filter, opacity; }
+.blur-in{ opacity:0; filter:blur(18px); transform:translateY(24px) scale(1.02); transition:opacity 0.9s var(--ease-lux), filter 0.9s var(--ease-lux), transform 0.9s var(--ease-lux); }
+.blur-in.inview{ opacity:1; filter:blur(0); transform:translateY(0) scale(1); }
+
+/* ============ PRELOADER : COMPACT OPENING ============ */
+#preloader{
+  position:fixed; inset:0; z-index:9999; background:var(--ivory);
+  display:flex; align-items:center; justify-content:center; flex-direction:column;
+  transition:opacity 1.1s var(--ease-slow), visibility 1.1s var(--ease-slow), transform 1.1s var(--ease-slow);
+  perspective:1200px;
+}
+#preloader.hide{ opacity:0; visibility:hidden; transform:scale(1.06); pointer-events:none; }
+.compact{ width:180px; height:180px; position:relative; }
+.compact-base{
+  position:absolute; inset:0; border-radius:50%;
+  background:radial-gradient(circle at 38% 32%, #fffaf1, var(--champagne) 55%, var(--rose-gold-deep) 100%);
+  box-shadow:0 30px 70px -20px rgba(150,96,106,0.5), inset 0 0 0 1px rgba(255,255,255,0.5);
+}
+.compact-shimmer{
+  position:absolute; inset:14%; border-radius:50%;
+  background:radial-gradient(circle at 40% 35%, rgba(255,255,255,0.9), rgba(255,255,255,0) 60%);
+  opacity:0.8;
+}
+.compact-lid{
+  position:absolute; inset:0; border-radius:50%;
+  background:linear-gradient(135deg, var(--rose-gold), var(--champagne-deep));
+  box-shadow:0 20px 50px -15px rgba(150,96,106,0.45);
+  transform-origin:50% 100%;
+  transform:rotateX(0deg);
+}
+.compact-particles{ position:absolute; inset:0; }
+.compact-particles span{
+  position:absolute; width:5px; height:5px; border-radius:50%; background:var(--champagne);
+  left:50%; top:38%; opacity:0;
+}
+.pre-logo{
+  margin-top:38px; font-family:var(--font-display); font-style:italic; font-size:2rem; letter-spacing:0.05em;
+  color:var(--rose-gold-deep); opacity:0; transform:translateY(14px);
+}
+.pre-tag{
+  margin-top:10px; font-size:0.65rem; letter-spacing:0.4em; text-transform:uppercase; color:var(--charcoal-soft);
+  opacity:0;
+}
+
+/* ============ CURSOR GLOW ============ */
+#cursor-glow{
+  position:fixed; width:480px; height:480px; border-radius:50%; pointer-events:none; z-index:6;
+  background:radial-gradient(circle, rgba(216,190,142,0.14) 0%, rgba(189,136,144,0.08) 42%, transparent 72%);
+  transform:translate(-50%,-50%); mix-blend-mode:multiply;
+}
+@media (max-width:900px){ #cursor-glow{ display:none; } }
+
+/* ============ SOUND TOGGLE ============ */
+#sound-toggle{
+  position:fixed; bottom:32px; left:32px; z-index:900;
+  width:52px; height:52px; border-radius:50%;
+  background:var(--glass); border:1px solid var(--glass-border); backdrop-filter:blur(14px);
+  display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-soft);
+  font-size:1rem; color:var(--rose-gold-deep); transition:transform .4s var(--ease-lux);
+}
+#sound-toggle:hover{ transform:scale(1.08); }
+@media (max-width:700px){ #sound-toggle{ display:none; } }
+
+/* ============ NAV ============ */
+header{
+  position:fixed; top:0; left:0; right:0; z-index:1000; padding:28px 0;
+  background:rgba(251,246,239,0.82);
+  backdrop-filter:blur(14px);
+  transform:translateY(0);
+  transition:transform 0.35s var(--ease-lux), background 0.45s var(--ease-slow), padding 0.45s var(--ease-slow), box-shadow 0.45s var(--ease-slow), backdrop-filter 0.45s;
+  mix-blend-mode:normal;
+}
+header.hide{
+  transform:translateY(-120%);
+}
+header.solid{
+  background:rgba(251,246,239,0.96); backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%);
+  padding:18px 0; box-shadow:0 10px 40px -18px rgba(42,37,33,0.15);
+}
+nav.container-wide{ display:flex; align-items:center; justify-content:space-between; gap:24px; }
+.logo{ font-family:var(--font-display); font-size:1.7rem; font-style:italic; letter-spacing:0.04em; color:var(--charcoal); white-space:nowrap; }
+.logo span{ color:var(--rose-gold-deep); }
+.nav-links{ display:flex; align-items:center; gap:42px; flex-wrap:wrap; }
+.nav-links a{ font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase; position:relative; padding-bottom:5px; }
+.nav-links a::after{ content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:var(--champagne-deep); transition:width .5s var(--ease-lux); }
+.nav-links a:hover::after{ width:100%; }
+.nav-cta{ padding:13px 30px; border:1px solid var(--rose-gold-deep); border-radius:100px; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--rose-gold-deep); transition:all .5s var(--ease-lux); position:relative; overflow:hidden; }
+.nav-cta:hover{ background:var(--rose-gold-deep); color:#fff; box-shadow:var(--shadow-soft); }
+.burger{ display:none; flex-direction:column; gap:6px; z-index:1100; }
+.burger span{ width:28px; height:1px; background:var(--charcoal); transition:all .3s; }
+@media (max-width:1000px){
+  .nav-links{
+    position:fixed; inset:0; z-index:1050; background:rgba(251,246,239,0.98);
+    flex-direction:column; align-items:center; justify-content:flex-start; gap:24px;
+    padding:120px 24px 40px;
+    width:100vw; height:100vh;
+    opacity:0; visibility:hidden; transform:translateY(-14px);
+    pointer-events:none;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    backdrop-filter:blur(18px);
+    transition:opacity .35s var(--ease-lux), transform .35s var(--ease-lux), visibility .35s var(--ease-lux);
+  }
+  .nav-links.open{ opacity:1; visibility:visible; transform:translateY(0); pointer-events:auto; }
+  .nav-links a{ font-size:1.4rem; font-family:var(--font-display); text-align:center; width:100%; display:block; }
+  .nav-links li{ width:100%; }
+  .nav-links li .nav-cta{ width:100%; max-width:320px; margin:0 auto; }
+  .burger{ display:flex; width:48px; height:48px; align-items:center; justify-content:center; padding:10px; border-radius:50%; background:rgba(255,255,255,0.95); box-shadow:0 12px 28px rgba(0,0,0,0.08); }
+  .burger.active span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  .burger.active span:nth-child(2){ opacity:0; }
+  .burger.active span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+  body.menu-open{ overflow:hidden; }
+}
+
+/* ============ TACTILE / MAGNETIC BUTTONS ============ */
+.btn{
+  display:inline-flex; align-items:center; gap:12px; position:relative; isolation:isolate;
+  padding:19px 42px; border-radius:100px; font-size:0.76rem; letter-spacing:0.16em; text-transform:uppercase;
+  transition:box-shadow 0.5s var(--ease-lux);
+}
+.btn-primary{ background:linear-gradient(135deg,var(--rose-gold-deep),var(--rose-gold)); color:#fff; box-shadow:var(--shadow-soft); overflow:hidden; }
+.btn-primary::before{
+  content:''; position:absolute; inset:0; border-radius:100px; background:radial-gradient(circle at var(--rx,50%) var(--ry,50%), rgba(255,255,255,0.35), transparent 60%);
+  opacity:0; transition:opacity .4s; z-index:-1;
+}
+.btn-primary:hover::before{ opacity:1; }
+.btn-primary:hover{ box-shadow:0 28px 80px -18px rgba(150,96,106,0.6); }
+.btn-outline{ border:1px solid rgba(42,37,33,0.28); color:var(--charcoal); }
+.btn-outline:hover{ border-color:var(--charcoal); background:var(--charcoal); color:#fff; }
+
+/* ============ HERO ============ */
+.hero{ min-height:100svh; position:relative; display:flex; align-items:flex-end; overflow:hidden; }
+.hero-media{ position:absolute; inset:0; z-index:0; overflow:hidden; }
+.hero-media img{ width:100%; height:100%; object-fit:cover; transform:scale(1.12); animation:hero-zoom 26s ease-in-out infinite alternate; }
+@keyframes hero-zoom{ from{ transform:scale(1.12);} to{ transform:scale(1.24);} }
+.hero-media::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(42,37,33,0.12) 0%, rgba(42,37,33,0.05) 40%, rgba(42,37,33,0.55) 100%); }
+.hero-veil{ position:absolute; inset:0; z-index:1; backdrop-filter:blur(0px); }
+.hero-particles{ position:absolute; inset:0; z-index:2; pointer-events:none; }
+.particle{ position:absolute; border-radius:50%; background:radial-gradient(circle, rgba(255,255,255,0.85), transparent 70%); opacity:0.5; }
+
+.hero{ min-height:100svh; position:relative; display:flex; align-items:flex-end; overflow:hidden; padding-top:46px; }
+.hero .container-wide{ position:relative; z-index:3; padding:54px 0 9vw; width:100%; }
+.hero-eyebrow{ color:rgba(255,255,255,0.85); }
+.hero-eyebrow::before{ background:var(--champagne); }
+.hero h1{
+  font-size:clamp(3rem,7.5vw,6.8rem); color:#fff; font-weight:300; letter-spacing:-0.01em;
+}
+.hero h1 em{ font-style:italic; color:var(--champagne); }
+.hero-sub{ display:flex; justify-content:space-between; align-items:flex-end; gap:40px; margin-top:44px; flex-wrap:wrap; }
+.hero-sub p{ color:rgba(255,255,255,0.82); max-width:400px; font-size:1.02rem; font-weight:300; }
+.hero-actions{ display:flex; gap:20px; flex-wrap:wrap; }
+
+.scroll-cue{
+  position:absolute; bottom:38px; left:50%; transform:translateX(-50%); z-index:3;
+  display:flex; flex-direction:column; align-items:center; gap:12px;
+  font-size:0.62rem; letter-spacing:0.32em; text-transform:uppercase; color:rgba(255,255,255,0.8);
+}
+.scroll-cue .line{ width:1px; height:52px; background:rgba(255,255,255,0.25); position:relative; overflow:hidden; }
+.scroll-cue .line::after{ content:''; position:absolute; top:-100%; left:0; width:100%; height:100%; background:var(--champagne); animation:cue-drop 2.4s ease-in-out infinite; }
+@keyframes cue-drop{ to{ top:100%; } }
+
+/* ============ INTRO STATEMENT (editorial full-bleed line) ============ */
+.statement{ background:var(--ivory); padding:min(16vw,190px) 0; text-align:center; position:relative; overflow:hidden; }
+.statement .container{ max-width:1100px; }
+.statement h2{
+  font-size:clamp(2.2rem,5.6vw,4.6rem); font-weight:300; color:var(--charcoal); line-height:1.22;
+}
+.statement h2 em{ font-style:italic; color:var(--rose-gold-deep); }
+.statement .sig{ margin-top:40px; font-family:var(--font-display); font-style:italic; font-size:1.3rem; color:var(--champagne-deep); }
+
+/* ============ ABOUT — floating overlap editorial ============ */
+.about{ background:var(--blush); padding:min(12vw,150px) 0; overflow:hidden; }
+.about-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0; align-items:center; position:relative; }
+.about-media{ position:relative; height:640px; }
+.about-img-a{ position:absolute; width:62%; height:78%; top:0; left:0; border-radius:0 0 220px 0; overflow:hidden; box-shadow:var(--shadow-deep); }
+.about-img-b{ position:absolute; width:46%; height:52%; bottom:0; right:0; border-radius:220px 0 0 0; overflow:hidden; box-shadow:var(--shadow-soft); border:10px solid var(--blush); }
+.about-img-a img, .about-img-b img{ width:100%; height:100%; object-fit:cover; }
+.about-copy{ padding-left:8vw; }
+.about-copy h2{ font-size:clamp(2.4rem,4.4vw,3.6rem); margin-bottom:28px; }
+.about-copy h2 em{ font-style:italic; color:var(--rose-gold-deep); }
+.about-copy p{ color:var(--charcoal-soft); font-weight:300; max-width:460px; margin-bottom:18px; }
+.about-stats{ display:flex; gap:56px; margin-top:44px; }
+.stat .count{ font-family:var(--font-display); font-size:3rem; color:var(--rose-gold-deep); }
+.stat .label{ font-size:0.68rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--charcoal-soft); margin-top:6px; }
+@media (max-width:1000px){
+  .about-grid{ grid-template-columns:1fr; }
+  .about-media{ height:460px; margin-bottom:60px; }
+  .about-copy{ padding-left:0; }
+}
+
+/* ============ SERVICES — alternating editorial sections ============ */
+.svc-intro{ text-align:center; padding:min(10vw,120px) 0 min(4vw,60px); }
+.svc-intro h2{ font-size:clamp(2.4rem,5vw,4.2rem); max-width:760px; margin:0 auto; }
+.svc-intro h2 em{ font-style:italic; color:var(--rose-gold-deep); }
+
+.svc-block{ position:relative; padding:min(9vw,110px) 0; overflow:hidden; }
+.svc-row{ display:grid; grid-template-columns:1fr 1fr; gap:6vw; align-items:center; }
+.svc-row.reverse .svc-row-media{ order:2; }
+.svc-row.reverse .svc-row-copy{ order:1; }
+.svc-row-media{ position:relative; height:560px; border-radius:0 200px 0 200px; overflow:hidden; box-shadow:var(--shadow-deep); }
+.svc-row.reverse .svc-row-media{ border-radius:200px 0 200px 0; }
+.svc-row-media img{ width:100%; height:100%; object-fit:cover; transform:scale(1.08); transition:transform 1.4s var(--ease-lux), filter 1.4s var(--ease-lux); }
+.svc-row-media:hover img{ transform:scale(1.16) rotate(-0.6deg); }
+.svc-tag{ font-size:0.68rem; letter-spacing:0.32em; text-transform:uppercase; color:var(--champagne-deep); margin-bottom:20px; display:block; }
+.svc-row-copy h3{ font-size:clamp(2.1rem,3.6vw,3.2rem); margin-bottom:22px; }
+.svc-row-copy h3 em{ font-style:italic; color:var(--rose-gold-deep); }
+.svc-list{ display:flex; flex-direction:column; gap:20px; margin-top:30px; }
+.svc-list .item{ display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px solid rgba(42,37,33,0.1); padding-bottom:16px; }
+.svc-list .item .name{ font-size:1.15rem; color:var(--charcoal); }
+.svc-list .item .desc{ font-size:0.82rem; color:var(--charcoal-soft); max-width:220px; text-align:right; font-weight:300; }
+.svc-row-copy p.lead{ color:var(--charcoal-soft); font-weight:300; max-width:440px; margin-bottom:8px; }
+.svc-cta{ margin-top:34px; display:inline-flex; align-items:center; gap:10px; font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--rose-gold-deep); border-bottom:1px solid var(--rose-gold-deep); padding-bottom:5px; transition:gap .4s var(--ease-lux); }
+.svc-cta:hover{ gap:18px; }
+
+/* centered feature (spa) */
+.svc-feature{ text-align:center; position:relative; padding:min(10vw,130px) 0; }
+.svc-feature-media{ max-width:920px; margin:0 auto 50px; height:56vh; min-height:420px; border-radius:280px 280px 40px 40px; overflow:hidden; box-shadow:var(--shadow-deep); position:relative; }
+.svc-feature-media img{ width:100%; height:100%; object-fit:cover; transform:scale(1.05); }
+.svc-feature h3{ font-size:clamp(2.2rem,4.4vw,3.6rem); max-width:640px; margin:0 auto 18px; }
+.svc-feature h3 em{ font-style:italic; color:var(--rose-gold-deep); }
+.svc-feature p{ max-width:460px; margin:0 auto; color:var(--charcoal-soft); font-weight:300; }
+
+/* diagonal split (final services block) */
+.svc-diagonal{ position:relative; padding:min(9vw,110px) 0; overflow:hidden; }
+.diag-grid{ display:grid; grid-template-columns:1.1fr 1fr; gap:0; }
+.diag-media{ position:relative; height:520px; clip-path:polygon(0 0,100% 8%,100% 100%,0% 92%); overflow:hidden; box-shadow:var(--shadow-deep); }
+.diag-media img{ width:100%; height:100%; object-fit:cover; transform:scale(1.1); transition:transform 1.4s var(--ease-lux); }
+.diag-media:hover img{ transform:scale(1.18); }
+.diag-copy{ padding:0 0 0 6vw; display:flex; flex-direction:column; justify-content:center; }
+.diag-copy h3{ font-size:clamp(2rem,3.6vw,3rem); margin-bottom:20px; }
+.diag-copy h3 em{ font-style:italic; color:var(--rose-gold-deep); }
+.diag-list{ display:flex; flex-direction:column; gap:22px; margin-top:20px; }
+.diag-list .name{ font-size:1.1rem; }
+.diag-list .desc{ font-size:0.85rem; color:var(--charcoal-soft); font-weight:300; margin-top:4px; max-width:380px; }
+@media (max-width:1000px){
+  .svc-row{ grid-template-columns:1fr; gap:44px; }
+  .svc-row.reverse .svc-row-media{ order:1; } .svc-row.reverse .svc-row-copy{ order:2; }
+  .svc-row-media{ height:420px; }
+  .diag-grid{ grid-template-columns:1fr; }
+  .diag-media{ height:380px; clip-path:none; border-radius:20px; }
+  .diag-copy{ padding-left:0; margin-top:44px; }
+}
+
+/* ============ TRANSFORMATION (before/after) ============ */
+.ba{ background:var(--beige); padding:min(11vw,140px) 0; text-align:center; }
+.ba-head{ max-width:600px; margin:0 auto 60px; }
+.ba-head h2{ font-size:clamp(2.2rem,4.4vw,3.4rem); }
+.ba-head h2 em{ font-style:italic; color:var(--rose-gold-deep); }
+.ba-wrap{ max-width:940px; margin:0 auto; border-radius:36px; overflow:hidden; box-shadow:var(--shadow-deep); position:relative; aspect-ratio:16/9; cursor:ew-resize; user-select:none; }
+.ba-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.ba-before{ z-index:1; }
+.ba-after-wrap{ position:absolute; inset:0; z-index:2; overflow:hidden; width:50%; }
+.ba-after-wrap img{ position:absolute; inset:0; width:940px; max-width:none; height:100%; object-fit:cover; }
+.ba-label{ position:absolute; top:24px; z-index:3; padding:9px 20px; border-radius:100px; background:rgba(255,255,255,0.85); backdrop-filter:blur(8px); font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase; }
+.ba-label.before{ left:24px; } .ba-label.after{ right:24px; }
+.ba-handle{ position:absolute; top:0; bottom:0; left:50%; z-index:4; transform:translateX(-50%); display:flex; align-items:center; justify-content:center; }
+.ba-handle::before{ content:''; position:absolute; top:0; bottom:0; width:2px; background:#fff; box-shadow:0 0 12px rgba(0,0,0,0.35); }
+.ba-grip{ width:56px; height:56px; border-radius:50%; background:#fff; box-shadow:var(--shadow-soft); display:flex; align-items:center; justify-content:center; color:var(--rose-gold-deep); position:relative; }
+
+/* ============ EXPERT ============ */
+.expert{ background:var(--ivory); padding:min(12vw,150px) 0; }
+.expert-grid{ display:grid; grid-template-columns:0.75fr 1.25fr; gap:8vw; align-items:center; }
+.expert-media{ position:relative; height:600px; border-radius:20px 220px 20px 220px; overflow:hidden; box-shadow:var(--shadow-deep); }
+.expert-media img{ width:100%; height:100%; object-fit:cover; }
+.expert h2{ font-size:clamp(2.2rem,4vw,3.4rem); margin-bottom:14px; }
+.expert h2 em{ font-style:italic; color:var(--rose-gold-deep); }
+.expert .role{ font-family:var(--font-display); font-style:italic; font-size:1.25rem; color:var(--champagne-deep); display:block; margin-bottom:26px; }
+.expert p{ color:var(--charcoal-soft); font-weight:300; max-width:560px; margin-bottom:18px; }
+.expert-socials{ display:flex; gap:16px; margin-top:28px; }
+.expert-socials a{ width:46px; height:46px; border-radius:50%; border:1px solid rgba(42,37,33,0.18); display:flex; align-items:center; justify-content:center; transition:all .5s var(--ease-lux); font-size:0.9rem; }
+.expert-socials a:hover{ background:var(--rose-gold-deep); border-color:var(--rose-gold-deep); color:#fff; transform:translateY(-5px); }
+@media (max-width:1000px){ .expert-grid{ grid-template-columns:1fr; } .expert-media{ height:440px; } }
+
+/* ============ REVIEWS — editorial marquee ============ */
+.reviews{ background:var(--blush); padding:min(12vw,150px) 0; overflow:hidden; }
+.reviews-head{ text-align:center; max-width:600px; margin:0 auto 20px; }
+.reviews-head h2{ font-size:clamp(2.2rem,4.4vw,3.4rem); }
+.reviews-head h2 em{ font-style:italic; color:var(--rose-gold-deep); }
+.reviews-rating{ display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:70px; }
+.reviews-rating .stars{ color:var(--champagne-deep); letter-spacing:3px; font-size:1.1rem; }
+.reviews-rating .score{ font-family:var(--font-display); font-size:1.8rem; color:var(--rose-gold-deep); }
+.reviews-track-wrap{ overflow:hidden; }
+.reviews-track{ display:flex; gap:36px; width:max-content; transition:transform 0.8s var(--ease-slow); }
+.review-card{ width:420px; padding:2px; }
+.review-card .q{ font-family:var(--font-display); font-style:italic; font-size:1.5rem; color:var(--charcoal); line-height:1.5; margin-bottom:26px; }
+.review-card .stars{ color:var(--champagne-deep); margin-bottom:18px; letter-spacing:2px; font-size:0.9rem; }
+.review-person{ display:flex; align-items:center; gap:14px; }
+.review-avatar{ width:48px; height:48px; border-radius:50%; overflow:hidden; }
+.review-person .name{ font-size:0.92rem; font-weight:400; }
+.review-person .role{ font-size:0.76rem; color:var(--charcoal-soft); }
+.reviews-nav{ display:flex; gap:16px; justify-content:center; margin-top:56px; }
+.reviews-nav button{ width:50px; height:50px; border-radius:50%; border:1px solid rgba(42,37,33,0.18); display:flex; align-items:center; justify-content:center; transition:all .4s var(--ease-lux); }
+.reviews-nav button:hover{ background:var(--charcoal); color:#fff; border-color:var(--charcoal); }
+
+/* ============ GALLERY — editorial magazine layout ============ */
+.gallery{ background:var(--ivory); padding:min(12vw,150px) 0; }
+.gallery-head{ text-align:center; max-width:620px; margin:0 auto 90px; }
+.gallery-head h2{ font-size:clamp(2.2rem,4.4vw,3.4rem); }
+.gallery-head h2 em{ font-style:italic; color:var(--rose-gold-deep); }
+.editorial-grid{
+  display:grid; grid-template-columns:repeat(12,1fr); gap:22px; align-items:start;
+}
+.eg-item{ border-radius:8px 90px 8px 90px; overflow:hidden; box-shadow:var(--shadow-soft); cursor:zoom-in; position:relative; }
+.eg-item img{ width:100%; height:100%; object-fit:cover; transition:transform 1.2s var(--ease-lux); }
+.eg-item:hover img{ transform:scale(1.1); }
+.eg1{ grid-column:1/6; grid-row:1/3; height:640px; margin-top:0; }
+.eg2{ grid-column:6/9; grid-row:1/2; height:300px; margin-top:80px; border-radius:90px 8px 90px 8px; }
+.eg3{ grid-column:9/13; grid-row:1/2; height:420px; }
+.eg4{ grid-column:6/10; grid-row:2/3; height:300px; margin-top:20px; }
+.eg5{ grid-column:10/13; grid-row:2/3; height:260px; margin-top:60px; border-radius:90px 8px 90px 8px; }
+.eg6{ grid-column:1/5; grid-row:3/4; height:260px; margin-top:30px; }
+.eg7{ grid-column:5/9; grid-row:3/4; height:340px; margin-top:-10px; border-radius:90px 8px 90px 8px; }
+.eg8{ grid-column:9/13; grid-row:3/4; height:300px; margin-top:20px; }
+@media (max-width:1000px){
+  .editorial-grid{ grid-template-columns:1fr 1fr; gap:16px; }
+  .eg-item{ grid-column:auto !important; grid-row:auto !important; height:280px !important; margin-top:0 !important; }
+  .eg1{ grid-column:1/3 !important; height:380px !important; }
+}
+
+#lightbox{ position:fixed; inset:0; background:rgba(20,16,14,0.94); z-index:3000; display:flex; align-items:center; justify-content:center; opacity:0; visibility:hidden; transition:opacity .5s ease, visibility .5s ease; padding:5vw; }
+#lightbox.open{ opacity:1; visibility:visible; }
+#lightbox img{ max-height:88vh; border-radius:16px; box-shadow:0 50px 120px rgba(0,0,0,0.5); }
+#lightbox .close{ position:absolute; top:32px; right:5vw; color:#fff; font-size:2rem; font-weight:300; }
+
+/* ============ INSTAGRAM ============ */
+.insta{ background:var(--charcoal); color:#fff; padding:min(10vw,120px) 0; }
+.insta-head{ text-align:center; max-width:600px; margin:0 auto 54px; }
+.insta-head .eyebrow{ color:var(--champagne); }
+.insta-head .eyebrow::before{ background:var(--champagne); }
+.insta-head h2{ color:#fff; font-size:clamp(2rem,3.8vw,3rem); margin-bottom:12px; }
+.insta-head h2 em{ font-style:italic; color:var(--champagne); }
+.insta-head a{ color:var(--rose-gold); font-size:0.95rem; }
+.insta-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+.insta-item{ position:relative; aspect-ratio:1/1; overflow:hidden; }
+.insta-item img{ width:100%; height:100%; object-fit:cover; transition:transform .7s var(--ease-lux); }
+.insta-item:hover img{ transform:scale(1.14); }
+.insta-item .icon{ position:absolute; inset:0; background:rgba(189,136,144,0.55); opacity:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.4rem; transition:opacity .5s; }
+.insta-item:hover .icon{ opacity:1; }
+@media (max-width:900px){ .insta-grid{ grid-template-columns:repeat(3,1fr); } }
+
+/* ============ APPOINTMENT ============ */
+.appointment{ background:linear-gradient(150deg,var(--rose-gold-deep),var(--rose-gold) 55%,var(--champagne)); color:#fff; position:relative; overflow:hidden; padding:min(12vw,150px) 0; }
+.appt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8vw; align-items:center; position:relative; z-index:1; }
+.appt-left .eyebrow{ color:rgba(255,255,255,0.88); } .appt-left .eyebrow::before{ background:#fff; }
+.appt-left h2{ color:#fff; font-size:clamp(2.2rem,4.4vw,3.4rem); margin-bottom:24px; }
+.appt-left h2 em{ color:var(--ivory); font-style:italic; }
+.appt-left p{ color:rgba(255,255,255,0.85); font-weight:300; max-width:440px; margin-bottom:38px; }
+.appt-info{ display:flex; flex-direction:column; gap:20px; }
+.appt-info-row{ display:flex; align-items:center; gap:16px; }
+.appt-info-row .ic{ width:48px; height:48px; border-radius:50%; background:rgba(255,255,255,0.18); display:flex; align-items:center; justify-content:center; }
+.appt-info-row small{ display:block; opacity:0.72; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:3px; }
+
+.appt-form{ background:var(--glass); backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px); border:1px solid rgba(255,255,255,0.55); border-radius:32px; padding:48px; box-shadow:var(--shadow-deep); }
+.appt-form h3{ font-size:1.8rem; color:var(--charcoal); margin-bottom:28px; }
+.form-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.field{ display:flex; flex-direction:column; gap:6px; }
+.field.full{ grid-column:1/-1; }
+.field label{ font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--charcoal-soft); }
+.field input, .field select, .field textarea{ padding:14px 16px; border-radius:12px; border:1px solid rgba(42,37,33,0.16); background:rgba(255,255,255,0.75); font-family:var(--font-body); font-size:0.92rem; color:var(--charcoal); transition:border-color .3s; }
+.field input:focus, .field select:focus, .field textarea:focus{ border-color:var(--rose-gold-deep); outline:none; }
+.appt-form button{ width:100%; margin-top:10px; justify-content:center; }
+@media (max-width:1000px){ .appt-grid{ grid-template-columns:1fr; } }
+@media (max-width:560px){ .form-row{ grid-template-columns:1fr; } }
+
+/* ============ CONTACT ============ */
+.contact{ background:var(--ivory); padding:min(12vw,150px) 0; }
+.contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; }
+.contact-card{ border-radius:32px; overflow:hidden; box-shadow:var(--shadow-soft); min-height:380px; background:var(--beige); }
+.contact-map{ width:100%; height:100%; border:0; filter:saturate(0.8) contrast(1.05); min-height:380px; }
+.contact-details h2{ font-size:clamp(2.2rem,4vw,3rem); margin-bottom:24px; }
+.contact-details h2 em{ font-style:italic; color:var(--rose-gold-deep); }
+.contact-list{ display:flex; flex-direction:column; gap:22px; margin-bottom:34px; }
+.contact-list .row{ display:flex; gap:16px; align-items:flex-start; }
+.contact-list .ic{ width:44px; height:44px; border-radius:50%; background:var(--blush); color:var(--rose-gold-deep); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.contact-list b{ display:block; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--charcoal-soft); margin-bottom:4px; }
+.social-row{ display:flex; gap:14px; }
+.social-row a{ width:48px; height:48px; border-radius:50%; background:var(--charcoal); color:#fff; display:flex; align-items:center; justify-content:center; transition:all .5s var(--ease-lux); }
+.social-row a:hover{ background:var(--rose-gold-deep); transform:translateY(-5px); }
+@media (max-width:1000px){ .contact-grid{ grid-template-columns:1fr; } }
+
+/* ============ FLOATING BOOK BUTTON ============ */
+#float-book{ position:fixed; bottom:32px; right:32px; z-index:900; padding:17px 28px; border-radius:100px; background:var(--charcoal); color:#fff; display:flex; align-items:center; gap:10px; box-shadow:0 22px 55px -14px rgba(0,0,0,0.4); transform:translateY(150px); transition:transform .7s var(--ease-slow), background .4s; font-size:0.76rem; letter-spacing:0.1em; text-transform:uppercase; }
+#float-book.show{ transform:translateY(0); }
+#float-book:hover{ background:var(--rose-gold-deep); }
+#float-book .dot{ width:8px; height:8px; border-radius:50%; background:var(--champagne); animation:pulse-dot 1.7s infinite; }
+@keyframes pulse-dot{ 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+@media (max-width:600px){ #float-book span.txt{ display:none; } #float-book{ padding:17px; } }
+
+/* ============ FOOTER ============ */
+footer{ background:var(--charcoal); color:rgba(255,255,255,0.75); padding:100px 0 34px; }
+.footer-grid{ display:grid; grid-template-columns:1.5fr 1fr 1fr 1.3fr; gap:54px; margin-bottom:70px; }
+.footer-brand .logo{ color:#fff; } .footer-brand .logo span{ color:var(--champagne); }
+.footer-brand p{ margin-top:20px; font-size:0.9rem; line-height:1.9; color:rgba(255,255,255,0.55); max-width:290px; }
+footer h4{ font-size:0.75rem; letter-spacing:0.14em; text-transform:uppercase; color:#fff; margin-bottom:24px; font-weight:400; }
+footer ul{ display:flex; flex-direction:column; gap:14px; }
+footer ul a{ font-size:0.9rem; color:rgba(255,255,255,0.6); transition:color .3s, padding-left .3s; }
+footer ul a:hover{ color:var(--champagne); padding-left:6px; }
+.footer-social{ display:flex; gap:12px; margin-top:22px; }
+.footer-social a{ width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; transition:all .3s; }
+.footer-social a:hover{ background:var(--rose-gold-deep); border-color:var(--rose-gold-deep); }
+.footer-bottom{ border-top:1px solid rgba(255,255,255,0.1); padding-top:28px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:0.8rem; color:rgba(255,255,255,0.45); }
+@media (max-width:1000px){ .footer-grid{ grid-template-columns:1fr 1fr; } }
+@media (max-width:560px){ .footer-grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<div id="preloader">
+  <div class="compact">
+    <div class="compact-base"><div class="compact-shimmer"></div></div>
+    <div class="compact-particles" id="compact-particles"></div>
+    <div class="compact-lid" id="compact-lid"></div>
+  </div>
+  <div class="pre-logo" id="pre-logo">Posh</div>
+  <div class="pre-tag" id="pre-tag">Beauty Studio · Kathmandu</div>
+</div>
+
+<div id="cursor-glow"></div>
+<button id="sound-toggle" aria-label="Toggle ambient sound">🔇</button>
+
+<header id="site-header">
+  <nav class="container-wide">
+    <a href="#home" class="logo">Posh <span>Beauty Studio</span></a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#appointment">Book Now</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#appointment" class="nav-cta">Book Appointment</a></li>
+    </ul>
+    <button class="burger" id="burger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="home">
+  <div class="hero-media">
+    <img src="1stimg.jpg" alt="Cinematic luxury beauty studio interior" loading="eager">
+  </div>
+  <div class="hero-particles" id="particles"></div>
+  <div class="container-wide">
+    <h1 id="hero-title">Beauty, <em>Composed</em><br>Like an Art Form.</h1>
+    <div class="hero-sub">
+      <p>An editorial beauty experience — makeup, hair artistry and personalized styling, crafted with the precision of a fashion atelier.</p>
+      <div class="hero-actions">
+        <a href="#appointment" class="btn btn-primary magnetic">Book Appointment</a>
+        <a href="#gallery" class="btn btn-outline magnetic" style="border-color:rgba(255,255,255,0.45); color:#fff;">View Portfolio</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATEMENT ============ -->
+<section class="statement">
+  <div class="blob" style="width:420px;height:420px;top:-120px;left:-160px;background:radial-gradient(circle,var(--champagne),transparent 70%);"></div>
+  <div class="blob" style="width:340px;height:340px;bottom:-140px;right:-120px;background:radial-gradient(circle,var(--rose-gold),transparent 70%);"></div>
+  <div class="container">
+    <h2 class="blur-in">We believe beauty is not applied — it is <em>revealed</em>. Every treatment at Posh begins with listening, and ends with a version of you that feels entirely your own.</h2>
+    <p class="sig blur-in">— The Posh Philosophy</p>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="about" id="about">
+  <div class="container about-grid">
+    <div class="about-media">
+      <div class="about-img-a blur-in"><img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=900&q=80" alt="Posh Beauty Studio treatment room" loading="lazy"></div>
+      <div class="about-img-b blur-in"><img src="2nd.jpg" alt="Beauty tools and products" loading="lazy"></div>
+    </div>
+    <div class="about-copy">
+      <span class="eyebrow">Our Story</span>
+      <h2 class="blur-in">A sanctuary for <em>beauty</em>, built on trust and detail.</h2>
+      <p class="blur-in">Posh Beauty Studio was founded on a simple belief — every client deserves to feel effortlessly beautiful. Nestled in Mahaboudha Complex, we blend premium products, certified expertise and genuine warmth into every appointment.</p>
+      <p class="blur-in">From bridal perfection to restorative hair rituals, we take the time to understand your features and your story, because personalized care is what turns a service into an experience.</p>
+      <div class="about-stats blur-in">
+        <div class="stat"><div class="count" data-count="500">0</div><div class="label">Happy Clients</div></div>
+        <div class="stat"><div class="count" data-count="10">0</div><div class="label">Years of Craft</div></div>
+        <div class="stat"><div class="count" data-count="9">0</div><div class="label">Signature Rituals</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES — alternating editorial ============ -->
+<section id="services">
+  <div class="svc-intro">
+    <span class="eyebrow" style="justify-content:center;">Our Rituals</span>
+    <h2 class="blur-in">Not a menu of services —<br>a study in <em>artistry</em>.</h2>
+  </div>
+
+  <!-- 1. Left image / right text : Makeup Artistry -->
+  <div class="svc-block" style="background:var(--pearl);">
+    <div class="container svc-row">
+      <div class="svc-row-media blur-in"><img src="3rd.png" alt="Makeup artistry at Posh Beauty Studio" loading="lazy"></div>
+      <div class="svc-row-copy">
+        <span class="svc-tag">I. Makeup Artistry</span>
+        <h3 class="blur-in">Flawless faces,<br><em>tailored</em> to you.</h3>
+        <p class="lead blur-in">Every look begins with your skin, your features and the moment you're dressing for — never a template.</p>
+        <div class="svc-list blur-in">
+          <div class="item"><span class="name">Professional Makeup</span><span class="desc">Flawless, long-lasting everyday looks</span></div>
+          <div class="item"><span class="name">Bridal Makeup</span><span class="desc">Timeless beauty for your big day</span></div>
+          <div class="item"><span class="name">Party Makeup</span><span class="desc">Bold, glamorous looks that turn heads</span></div>
+        </div>
+        <a href="#appointment" class="svc-cta blur-in">Book a Makeup Ritual →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Right image / left text : Hair Artistry -->
+  <div class="svc-block" style="background:var(--beige);">
+    <div class="container svc-row reverse">
+      <div class="svc-row-media blur-in"><img src="4th.png" alt="Hair styling artistry at Posh Beauty Studio" loading="lazy"></div>
+      <div class="svc-row-copy">
+        <span class="svc-tag">II. Hair Artistry</span>
+        <h3 class="blur-in">Movement, shine,<br>and <em>shape</em>.</h3>
+        <p class="lead blur-in">From restorative treatments to custom color, our hair rituals are designed around the health of every strand.</p>
+        <div class="svc-list blur-in">
+          <div class="item"><span class="name">Hair Styling</span><span class="desc">Blowouts and updos, tailored to you</span></div>
+          <div class="item"><span class="name">Hair Coloring</span><span class="desc">Custom color and balayage</span></div>
+          <div class="item"><span class="name">Hair Treatments</span><span class="desc">Restorative care for healthy hair</span></div>
+        </div>
+        <a href="#appointment" class="svc-cta blur-in">Book a Hair Ritual →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Centered feature : Hair Spa -->
+  <div class="svc-feature" style="background:var(--pearl);">
+    <div class="container">
+      <span class="eyebrow" style="justify-content:center;">III. The Ritual of Rest</span>
+      <div class="svc-feature-media blur-in"><img src="5th.png" loading="lazy"></div>
+      <h3 class="blur-in">Hair Spa — a deep<br><em>conditioning</em> escape.</h3>
+      <p class="blur-in">Scalp massage, nourishing masks and warm steam — a slow ritual for strands that need to breathe again.</p>
+    </div>
+  </div>
+
+  <!-- 4. Diagonal split : Lash + Consultation -->
+  <div class="svc-diagonal" style="background:var(--beige);">
+    <div class="container diag-grid">
+      <div class="diag-media blur-in"><img src="6th.png" alt="Eyelash extensions at Posh Beauty Studio" loading="lazy"></div>
+      <div class="diag-copy">
+        <span class="svc-tag">IV. The Finishing Detail</span>
+        <h3 class="blur-in">Small touches, <em>lasting</em> impressions.</h3>
+        <div class="diag-list blur-in">
+          <div><div class="name">Eyelash Extensions</div><div class="desc">Natural to dramatic lashes, expertly applied strand by strand.</div></div>
+          <div><div class="name">Beauty Consultation</div><div class="desc">A personal session to map out your ideal beauty routine.</div></div>
+        </div>
+        <a href="#appointment" class="svc-cta blur-in">Book a Finishing Touch →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRANSFORMATION ============ -->
+<section class="ba" id="transformations">
+  <div class="container">
+    <div class="ba-head">
+      <span class="eyebrow" style="justify-content:center;">The Transformation</span>
+      <h2 class="blur-in">See the <em>Posh</em> difference</h2>
+    </div>
+    <div class="ba-wrap blur-in" id="ba-wrap">
+      <img class="ba-img ba-before" src="after.png" alt="Before beauty transformation">
+      <div class="ba-after-wrap" id="ba-after-wrap">
+        <img src="before.png" alt="After beauty transformation">
+      </div>
+      <span class="ba-label before">Before</span>
+      <span class="ba-label after">After</span>
+      <div class="ba-handle" id="ba-handle"><div class="ba-grip">↔</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPERT ============ -->
+<section class="expert" id="expert">
+  <div class="container expert-grid">
+    <div class="expert-media blur-in">
+      <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=80" alt="Silvia Siwakoti, founder of Posh Beauty Studio" loading="lazy">
+    </div>
+    <div class="expert-copy">
+      <span class="eyebrow">Meet Our Expert</span>
+      <h2 class="blur-in">Silvia <em>Siwakoti</em></h2>
+      <span class="role">Founder & Lead Beauty Artist</span>
+      <p class="blur-in">With over a decade of hands-on experience, Silvia has built Posh Beauty Studio into Kathmandu's trusted destination for premium makeup, hair and skin care. Her eye for detail and warm, welcoming approach put every client at ease.</p>
+      <p class="blur-in">Silvia and her team stay ahead of global beauty trends while honoring each client's individuality — because true beauty is personal.</p>
+      <div class="expert-socials blur-in">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="WhatsApp">WA</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="reviews" id="reviews">
+  <div class="container">
+    <div class="reviews-head">
+      <span class="eyebrow" style="justify-content:center;">Client Love</span>
+      <h2 class="blur-in">What our clients <em>say</em></h2>
+    </div>
+    <div class="reviews-rating blur-in">
+      <span class="stars">★★★★★</span>
+      <span class="score">4.9</span>
+      <span style="color:var(--charcoal-soft);font-size:0.9rem;">out of 320+ reviews</span>
+    </div>
+  </div>
+  <div class="reviews-track-wrap container">
+    <div class="reviews-track" id="reviews-track"></div>
+  </div>
+  <div class="reviews-nav">
+    <button id="rev-prev" aria-label="Previous review">←</button>
+    <button id="rev-next" aria-label="Next review">→</button>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="gallery-head">
+      <span class="eyebrow" style="justify-content:center;">Portfolio</span>
+      <h2 class="blur-in">Moments of <em>transformation</em></h2>
+    </div>
+    <div class="editorial-grid" id="editorial-grid"></div>
+  </div>
+</section>
+
+<div id="lightbox"><span class="close" id="lightbox-close">&times;</span><img id="lightbox-img" src="" alt="Enlarged gallery photo"></div>
+
+<!-- ============ INSTAGRAM ============ -->
+<section class="insta" id="instagram">
+  <div class="container">
+    <div class="insta-head">
+      <span class="eyebrow">Follow Along</span>
+      <h2>@ Posh <em>Beauty Studio</em> Kathmandu</h2>
+      <a href="#" target="_blank" rel="noopener">View on Instagram →</a>
+    </div>
+  </div>
+  <div class="insta-grid" id="insta-grid"></div>
+</section>
+
+<!-- ============ APPOINTMENT ============ -->
+<section class="appointment" id="appointment">
+  <div class="container appt-grid">
+    <div class="appt-left">
+      <span class="eyebrow">Reserve Your Visit</span>
+      <h2 class="blur-in">Let's craft your<br>best <em>look</em> yet.</h2>
+      <p class="blur-in">Tell us what you're dreaming of and our team will confirm your appointment within the hour.</p>
+      <div class="appt-info blur-in">
+        <div class="appt-info-row"><span class="ic">☎</span><div><small>Call Us</small>+977 9851023825</div></div>
+        <div class="appt-info-row"><span class="ic">✆</span><div><small>WhatsApp</small>+977 9851023825</div></div>
+        <div class="appt-info-row"><span class="ic">⏰</span><div><small>Opening Hours</small>Sun – Fri, 10:00 AM – 7:00 PM</div></div>
+      </div>
+    </div>
+    <form class="appt-form blur-in" id="booking-form">
+      <h3>Book Appointment</h3>
+      <div class="form-row">
+        <div class="field"><label for="name">Full Name</label><input id="name" type="text" placeholder="Your name" required></div>
+        <div class="field"><label for="phone">Phone</label><input id="phone" type="tel" placeholder="98XXXXXXXX" required></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label for="service">Service</label>
+          <select id="service">
+            <option>Professional Makeup</option>
+            <option>Hair Styling</option>
+            <option>Hair Treatments</option>
+            <option>Hair Coloring</option>
+            <option>Bridal Makeup</option>
+            <option>Party Makeup</option>
+            <option>Hair Spa</option>
+            <option>Eyelash Extensions</option>
+            <option>Beauty Consultation</option>
+          </select>
+        </div>
+        <div class="field"><label for="date">Preferred Date</label><input id="date" type="date"></div>
+      </div>
+      <div class="form-row">
+        <div class="field full"><label for="notes">Notes</label><textarea id="notes" rows="3" placeholder="Anything we should know?"></textarea></div>
+      </div>
+      <button type="submit" class="btn btn-primary magnetic">Confirm Appointment</button>
+    </form>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="container contact-grid">
+    <div class="contact-details blur-in">
+      <span class="eyebrow">Visit Us</span>
+      <h2>Find your way to <em>Posh</em></h2>
+      <div class="contact-list">
+        <div class="row"><span class="ic">📍</span><div><b>Address</b>Mahaboudha Complex, Kathmandu, Nepal</div></div>
+        <div class="row"><span class="ic">☎</span><div><b>Phone</b>+977 9851023825</div></div>
+        <div class="row"><span class="ic">✆</span><div><b>WhatsApp</b>+977 9851023825</div></div>
+        <div class="row"><span class="ic">⏰</span><div><b>Hours</b>Sun – Fri · 10:00 AM – 7:00 PM</div></div>
+      </div>
+      <div class="social-row">
+        <a href="#" aria-label="Facebook">f</a>
+        <a href="#" aria-label="Instagram">◎</a>
+        <a href="#" aria-label="WhatsApp">✆</a>
+      </div>
+    </div>
+    <div class="contact-card blur-in">
+      <iframe class="contact-map" src="https://maps.google.com/maps?q=Mahaboudha%2C%20Kathmandu%2C%20Nepal&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" title="Posh Beauty Studio location map" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</section>
+
+<a href="https://wa.me/9779851023825?text=Hi%20Posh%20Beauty%20Studio%2C%20I%27d%20like%20to%20book%20an%20appointment" id="float-book" target="_blank" rel="noopener"><span class="dot"></span><span class="txt">Book Now</span></a>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#home" class="logo">Posh <span>Beauty Studio</span></a>
+        <p>A cinematic beauty experience in the heart of Kathmandu — where luxury, artistry and warmth meet.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">◎</a>
+          <a href="#" aria-label="WhatsApp">✆</a>
+        </div>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#appointment">Book Appointment</a></li>
+          <li><a href="#instagram">Instagram</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Opening Hours</h4>
+        <ul>
+          <li>Sunday – Friday</li>
+          <li>10:00 AM – 7:00 PM</li>
+          <li>Saturday: Closed</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Posh Beauty Studio. All rights reserved.</span>
+      <span>Mahaboudha Complex, Kathmandu, Nepal · +977 9851023825</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---------- DATA ---------- */
+const reviewsData = [
+  {name:'Anjali R.', role:'Bridal Client', text:'Posh made my wedding day absolutely magical. Silvia and her team understood exactly what I wanted.', img:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80'},
+  {name:'Priya S.', role:'Regular Client', text:'The most relaxing, luxurious salon experience in Kathmandu. Clean, warm and truly professional.', img:'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=100&q=80'},
+  {name:'Sabina T.', role:'Hair Spa Client', text:'My hair has never felt healthier. The staff are so attentive and the space feels like a five-star spa.', img:'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80'},
+  {name:'Rekha M.', role:'Makeup Client', text:'Flawless makeup that lasted the entire event. I felt confident and beautiful all night long.', img:'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=100&q=80'},
+  {name:'Nisha K.', role:'Lash Client', text:'Booking was effortless and the results exceeded expectations. Posh is worth every penny.', img:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=100&q=80'}
+];
+
+const galleryImgs = [
+  'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1522336572468-97b06e8ef143?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1583001809873-a128495da465?auto=format&fit=crop&w=800&q=80'
+];
+
+/* ---------- TEXT SPLIT (words, blur-in stagger) ---------- */
+function splitWords(el){
+  const words = el.textContent.trim().split(/\s+/);
+  el.innerHTML = '';
+  const spans = [];
+  words.forEach((w,i)=>{
+    const wrap = document.createElement('span');
+    wrap.className = 'split-word';
+    const inner = document.createElement('span');
+    inner.textContent = w + (i < words.length-1 ? '\u00A0' : '');
+    wrap.appendChild(inner);
+    el.appendChild(wrap);
+    spans.push(inner);
+  });
+  return spans;
+}
+const heroTitleEl = document.getElementById('hero-title');
+// preserve <em> tags: split manually keeping HTML structure simple since content has one <em>
+function splitHeroTitle(){
+  const html = heroTitleEl.innerHTML;
+  const parts = html.split(/(<em>.*?<\/em>|<br>)/g).filter(Boolean);
+  heroTitleEl.innerHTML = '';
+  const spans = [];
+  parts.forEach(part=>{
+    if(part === '<br>'){ heroTitleEl.appendChild(document.createElement('br')); return; }
+    const isEm = part.startsWith('<em>');
+    const text = part.replace(/<\/?em>/g,'');
+    text.split(/(\s+)/).forEach(tok=>{
+      if(!tok) return;
+      if(/^\s+$/.test(tok)){ heroTitleEl.appendChild(document.createTextNode(' ')); return; }
+      const wrap = document.createElement('span');
+      wrap.className = 'split-word';
+      const inner = document.createElement(isEm ? 'em' : 'span');
+      inner.textContent = tok;
+      inner.style.display='inline-block';
+      wrap.appendChild(inner);
+      heroTitleEl.appendChild(wrap);
+      spans.push(inner);
+    });
+  });
+  return spans;
+}
+const heroSpans = splitHeroTitle();
+gsap.set(heroSpans, {yPercent:120, opacity:0, filter:'blur(10px)'});
+
+/* ---------- BUILD REVIEWS ---------- */
+const track = document.getElementById('reviews-track');
+function renderReviews(){
+  track.innerHTML='';
+  reviewsData.forEach(r=>{
+    const el = document.createElement('div');
+    el.className='review-card';
+    el.innerHTML = `
+      <div class="stars">★★★★★</div>
+      <p class="q">"${r.text}"</p>
+      <div class="review-person">
+        <div class="review-avatar"><img src="${r.img}" alt="${r.name}" loading="lazy"></div>
+        <div><div class="name">${r.name}</div><div class="role">${r.role}</div></div>
+      </div>`;
+    track.appendChild(el);
+  });
+}
+renderReviews();
+let revIndex = 0;
+function updateReviewPos(){
+  const cardWidth = 420 + 36;
+  const visible = window.innerWidth < 900 ? 1 : (window.innerWidth < 1400 ? 2 : 3);
+  const maxIndex = Math.max(0, reviewsData.length - visible);
+  revIndex = Math.max(0, Math.min(revIndex, maxIndex));
+  track.style.transform = `translateX(-${revIndex * cardWidth}px)`;
+}
+document.getElementById('rev-next').addEventListener('click', ()=>{ revIndex++; updateReviewPos(); });
+document.getElementById('rev-prev').addEventListener('click', ()=>{ revIndex--; updateReviewPos(); });
+window.addEventListener('resize', updateReviewPos);
+updateReviewPos();
+setInterval(()=>{
+  const visible = window.innerWidth < 900 ? 1 : (window.innerWidth < 1400 ? 2 : 3);
+  const maxIndex = Math.max(0, reviewsData.length - visible);
+  revIndex = revIndex >= maxIndex ? 0 : revIndex+1;
+  updateReviewPos();
+}, 4800);
+
+/* ---------- BUILD EDITORIAL GALLERY ---------- */
+const egGrid = document.getElementById('editorial-grid');
+const egClasses = ['eg1','eg2','eg3','eg4','eg5','eg6','eg7','eg8'];
+galleryImgs.forEach((src,i)=>{
+  const el = document.createElement('div');
+  el.className = 'eg-item blur-in ' + (egClasses[i] || '');
+  el.innerHTML = `<img src="${src}" alt="Posh Beauty Studio portfolio photo" loading="lazy">`;
+  el.addEventListener('click', ()=>{
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+  });
+  egGrid.appendChild(el);
+});
+document.getElementById('lightbox-close').addEventListener('click', ()=> document.getElementById('lightbox').classList.remove('open'));
+document.getElementById('lightbox').addEventListener('click', (e)=>{ if(e.target.id==='lightbox') e.currentTarget.classList.remove('open'); });
+
+/* ---------- BUILD INSTAGRAM ---------- */
+const instaGrid = document.getElementById('insta-grid');
+galleryImgs.slice(0,10).forEach(src=>{
+  const el = document.createElement('a');
+  el.className='insta-item'; el.href='#'; el.target='_blank'; el.rel='noopener';
+  el.innerHTML = `<img src="${src}" alt="Instagram post" loading="lazy"><div class="icon">◎</div>`;
+  instaGrid.appendChild(el);
+});
+
+/* ---------- PRELOADER : COMPACT OPENING ---------- */
+function runPreloader(){
+  const particlesWrap = document.getElementById('compact-particles');
+  for(let i=0;i<26;i++){
+    const p = document.createElement('span');
+    const angle = Math.random()*Math.PI*2;
+    const dist = 60 + Math.random()*90;
+    p.style.setProperty('--dx', Math.cos(angle)*dist+'px');
+    p.style.setProperty('--dy', Math.sin(angle)*dist+'px');
+    particlesWrap.appendChild(p);
+  }
+  const tl = gsap.timeline({ delay:0.3 });
+  tl.to('#compact-lid', { rotateX:-165, duration:1.3, ease:'power3.inOut' })
+    .to('.compact-particles span', {
+      x:(i,t)=> t.style.getPropertyValue('--dx'),
+      y:(i,t)=> t.style.getPropertyValue('--dy'),
+      opacity:1, duration:1, ease:'power2.out', stagger:0.012
+    }, '-=0.5')
+    .to('.compact-particles span', { opacity:0, duration:0.8 }, '-=0.2')
+    .to('#pre-logo', { opacity:1, y:0, duration:0.9, ease:'power3.out' }, '-=0.9')
+    .to('#pre-tag', { opacity:1, duration:0.9, ease:'power3.out' }, '-=0.7')
+    .to('#preloader', { duration:0.3 }, '+=0.5')
+    .add(()=>{
+      document.getElementById('preloader').classList.add('hide');
+      animateHeroIn();
+    });
+}
+window.addEventListener('load', ()=> setTimeout(runPreloader, 200));
+
+/* ---------- HERO ENTRANCE ---------- */
+function animateHeroIn(){
+  gsap.to(heroSpans, { yPercent:0, opacity:1, filter:'blur(0px)', duration:1.0, stagger:0.04, ease:'power3.out' });
+  gsap.to('.hero-eyebrow, .hero-sub', { opacity:1, y:0, duration:1.0, ease:'power3.out', stagger:0.1, delay:0.1 });
+}
+gsap.set('.hero-eyebrow, .hero-sub', { opacity:0, y:22 });
+
+/* ---------- PARTICLES (hero ambient) ---------- */
+const particleWrap = document.getElementById('particles');
+for(let i=0;i<24;i++){
+  const p = document.createElement('div');
+  p.className='particle';
+  const size = 3 + Math.random()*8;
+  p.style.width = size+'px'; p.style.height = size+'px';
+  p.style.left = Math.random()*100+'%';
+  p.style.top = Math.random()*100+'%';
+  particleWrap.appendChild(p);
+  gsap.to(p, {
+    y:(Math.random()>0.5?1:-1)*(50+Math.random()*90),
+    x:(Math.random()>0.5?1:-1)*(30+Math.random()*50),
+    duration:8+Math.random()*8, repeat:-1, yoyo:true, ease:'sine.inOut', delay:Math.random()*4
+  });
+}
+
+/* ---------- CURSOR GLOW ---------- */
+const glow = document.getElementById('cursor-glow');
+let mx=window.innerWidth/2, my=window.innerHeight/2, gx=mx, gy=my;
+window.addEventListener('mousemove', e=>{ mx=e.clientX; my=e.clientY; });
+function glowLoop(){
+  gx += (mx-gx)*0.07; gy += (my-gy)*0.07;
+  glow.style.transform = `translate(${gx}px, ${gy}px) translate(-50%,-50%)`;
+  requestAnimationFrame(glowLoop);
+}
+glowLoop();
+
+/* ---------- MAGNETIC + TACTILE BUTTONS ---------- */
+document.querySelectorAll('.magnetic').forEach(btn=>{
+  btn.addEventListener('mousemove', e=>{
+    const r = btn.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width/2;
+    const y = e.clientY - r.top - r.height/2;
+    gsap.to(btn, {x:x*0.28, y:y*0.38, duration:0.5, ease:'power3.out'});
+    btn.style.setProperty('--rx', ((e.clientX-r.left)/r.width*100)+'%');
+    btn.style.setProperty('--ry', ((e.clientY-r.top)/r.height*100)+'%');
+  });
+  btn.addEventListener('mouseleave', ()=> gsap.to(btn, {x:0, y:0, duration:0.6, ease:'elastic.out(1,0.4)'}));
+});
+
+/* ---------- SOFT AMBIENT SOUND (Web Audio, muted by default) ---------- */
+let audioCtx=null, ambientNodes=[], soundOn=false;
+function startAmbient(){
+  audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  const master = audioCtx.createGain(); master.gain.value = 0.028; master.connect(audioCtx.destination);
+  [220, 330, 440].forEach((freq,i)=>{
+    const osc = audioCtx.createOscillator(); osc.type='sine'; osc.frequency.value=freq;
+    const g = audioCtx.createGain(); g.gain.value=0.5/(i+1);
+    osc.connect(g); g.connect(master); osc.start();
+    ambientNodes.push(osc);
+  });
+}
+function stopAmbient(){
+  ambientNodes.forEach(o=>{ try{o.stop();}catch(e){} });
+  ambientNodes=[];
+  if(audioCtx){ audioCtx.close(); audioCtx=null; }
+}
+document.getElementById('sound-toggle').addEventListener('click', function(){
+  soundOn = !soundOn;
+  this.textContent = soundOn ? '🔈' : '🔇';
+  if(soundOn) startAmbient(); else stopAmbient();
+});
+
+/* ---------- NAV SOLID ON SCROLL + FLOAT BOOK BTN ---------- */
+const header = document.getElementById('site-header');
+const floatBook = document.getElementById('float-book');
+let lastScrollY = window.scrollY;
+const hideDelta = 12;
+window.addEventListener('scroll', ()=>{
+  const currentY = window.scrollY;
+  header.classList.toggle('solid', currentY > 60);
+  floatBook.classList.toggle('show', currentY > 700);
+
+  if(navLinks.classList.contains('open')){
+    lastScrollY = currentY;
+    return;
+  }
+
+  if(currentY > lastScrollY + hideDelta && currentY > 80){
+    header.classList.add('hide');
+  } else if(currentY < lastScrollY - hideDelta || currentY <= 80){
+    header.classList.remove('hide');
+  }
+  lastScrollY = currentY;
+});
+
+window.addEventListener('load', ()=>{
+  const initialY = window.scrollY;
+  header.classList.toggle('solid', initialY > 60);
+  header.classList.remove('hide');
+  lastScrollY = initialY;
+});
+
+/* ---------- MOBILE MENU ---------- */
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('nav-links');
+burger.addEventListener('click', ()=>{
+  const opening = !navLinks.classList.contains('open');
+  navLinks.classList.toggle('open');
+  burger.classList.toggle('active');
+  document.body.classList.toggle('menu-open', opening);
+  if(opening){
+    header.classList.remove('hide');
+  }
+});
+navLinks.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=>{
+  navLinks.classList.remove('open');
+  burger.classList.remove('active');
+  document.body.classList.remove('menu-open');
+}));
+
+/* ---------- SCROLL REVEALS (blur-to-focus) ---------- */
+document.querySelectorAll('.blur-in').forEach(el=>{
+  ScrollTrigger.create({ trigger:el, start:'top 90%', onEnter:()=> el.classList.add('inview') });
+});
+
+/* ---------- ANIMATED COUNTERS ---------- */
+document.querySelectorAll('[data-count]').forEach(counter=>{
+  const target = parseInt(counter.getAttribute('data-count'), 10);
+  ScrollTrigger.create({
+    trigger:counter, start:'top 90%', once:true,
+    onEnter:()=>{
+      let obj = {val:0};
+      gsap.to(obj, { val:target, duration:2, ease:'power2.out', onUpdate:()=> counter.textContent = Math.floor(obj.val) });
+    }
+  });
+});
+
+/* ---------- PARALLAX (hero + service media camera-like movement) ---------- */
+gsap.to('.hero-media img', { yPercent:12, ease:'none', scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:true } });
+document.querySelectorAll('.svc-row-media img, .about-img-a img, .about-img-b img, .expert-media img, .diag-media img').forEach(img=>{
+  gsap.fromTo(img, {yPercent:-6}, { yPercent:6, ease:'none', scrollTrigger:{ trigger:img, start:'top bottom', end:'bottom top', scrub:true } });
+});
+
+/* ---------- BEFORE / AFTER SLIDER ---------- */
+const baWrap = document.getElementById('ba-wrap');
+const baAfter = document.getElementById('ba-after-wrap');
+const baHandle = document.getElementById('ba-handle');
+function setBA(pct){
+  pct = Math.max(4, Math.min(96, pct));
+  baAfter.style.width = pct+'%';
+  baHandle.style.left = pct+'%';
+}
+let baDragging=false;
+function baFromEvent(e){
+  const r = baWrap.getBoundingClientRect();
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  setBA(((clientX - r.left)/r.width)*100);
+}
+baWrap.addEventListener('mousedown', e=>{ baDragging=true; baFromEvent(e); });
+window.addEventListener('mouseup', ()=> baDragging=false);
+window.addEventListener('mousemove', e=>{ if(baDragging) baFromEvent(e); });
+baWrap.addEventListener('touchstart', e=>{ baDragging=true; baFromEvent(e); });
+window.addEventListener('touchend', ()=> baDragging=false);
+baWrap.addEventListener('touchmove', e=>{ baFromEvent(e); });
+setBA(50);
+
+/* ---------- BOOKING FORM ---------- */
+document.getElementById('booking-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const btn = this.querySelector('button');
+  const original = btn.textContent;
+  btn.textContent = 'Request Sent ✓';
+  gsap.fromTo(btn, {scale:0.96}, {scale:1, duration:0.4, ease:'back.out(3)'});
+  setTimeout(()=>{ btn.textContent = original; this.reset(); }, 2600);
+});
+</script>
+</body>
+</html>
