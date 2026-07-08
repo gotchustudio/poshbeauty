@@ -487,8 +487,10 @@ header.solid .logo img{ top:-61px; width:150px; }
 /* ============ CONTACT ============ */
 .contact{ background:var(--ivory); padding:min(12vw,150px) 0; }
 .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; }
-.contact-card{ border-radius:32px; overflow:hidden; box-shadow:var(--shadow-soft); min-height:380px; background:var(--beige); }
+.contact-card{ position:relative; border-radius:32px; overflow:hidden; box-shadow:var(--shadow-soft); min-height:380px; background:var(--beige); }
 .contact-map{ width:100%; height:100%; border:0; filter:saturate(0.8) contrast(1.05); min-height:380px; }
+.map-link{ position:absolute; right:18px; bottom:18px; z-index:2; padding:12px 18px; border-radius:100px; background:rgba(255,255,255,0.9); border:1px solid rgba(255,255,255,0.72); color:var(--rose-gold-deep); box-shadow:0 16px 34px -22px rgba(42,37,33,0.45); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); font-size:0.68rem; letter-spacing:0.13em; text-transform:uppercase; transition:transform .35s var(--ease-lux), background .35s var(--ease-lux), color .35s var(--ease-lux); }
+.map-link:hover{ transform:translateY(-3px); background:var(--rose-gold-deep); color:#fff; }
 .contact-details h2{ font-size:clamp(2.2rem,4vw,3rem); margin-bottom:24px; }
 .contact-details h2 em{ font-style:italic; color:var(--rose-gold-deep); }
 .contact-logo{ width:min(190px,48vw); margin-bottom:22px; }
@@ -755,6 +757,7 @@ footer ul a:hover{ color:var(--champagne); padding-left:6px; }
       <div class="expert-socials blur-in">
         <a href="https://www.instagram.com/poshbeautystudio.1" target="_blank" rel="noopener noreferrer" aria-label="Follow Posh Beauty Studio on Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
         <a href="https://www.facebook.com/share/1EzfcAyAkZ/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Follow Posh Beauty Studio on Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+        <a href="https://www.tiktok.com/@posh.beauty.studio1?_r=1&_t=ZS-97r9PQr44kn" target="_blank" rel="noopener noreferrer" aria-label="Follow Posh Beauty Studio on TikTok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a>
         <a href="https://wa.me/9779851023825?text=Hi%20Posh%20Beauty%20Studio%2C%20I%27d%20like%20to%20book%20an%20appointment" target="_blank" rel="noopener noreferrer" aria-label="Message Posh Beauty Studio on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
       </div>
     </div>
@@ -860,7 +863,7 @@ footer ul a:hover{ color:var(--champagne); padding-left:6px; }
       <span class="eyebrow">Visit Us</span>
       <h2>Find your way to <em>Posh</em></h2>
       <div class="contact-list">
-        <div class="row"><span class="ic">📍</span><div><b>Address</b>Mahaboudha Complex, Kathmandu, Nepal</div></div>
+        <div class="row"><span class="ic">📍</span><div><b>Address</b><a href="https://maps.app.goo.gl/ex5dkqBd7pjTXGv97" target="_blank" rel="noopener noreferrer">Posh Beauty Studio, Kathmandu, Nepal</a></div></div>
         <div class="row"><span class="ic">☎</span><div><b>Phone</b>+977 9851023825</div></div>
         <div class="row"><span class="ic">✆</span><div><b>WhatsApp</b>+977 9851023825</div></div>
         <div class="row"><span class="ic">⏰</span><div><b>Hours</b>Sun – Fri · 10:00 AM – 7:00 PM</div></div>
@@ -868,11 +871,13 @@ footer ul a:hover{ color:var(--champagne); padding-left:6px; }
       <div class="social-row">
         <a href="https://www.facebook.com/share/1EzfcAyAkZ/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Follow Posh Beauty Studio on Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
         <a href="https://www.instagram.com/poshbeautystudio.1" target="_blank" rel="noopener noreferrer" aria-label="Follow Posh Beauty Studio on Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+        <a href="https://www.tiktok.com/@posh.beauty.studio1?_r=1&_t=ZS-97r9PQr44kn" target="_blank" rel="noopener noreferrer" aria-label="Follow Posh Beauty Studio on TikTok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a>
         <a href="https://wa.me/9779851023825?text=Hi%20Posh%20Beauty%20Studio%2C%20I%27d%20like%20to%20book%20an%20appointment" target="_blank" rel="noopener noreferrer" aria-label="Message Posh Beauty Studio on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
       </div>
     </div>
     <div class="contact-card blur-in">
-      <iframe class="contact-map" src="https://maps.google.com/maps?q=Mahaboudha%2C%20Kathmandu%2C%20Nepal&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" title="Posh Beauty Studio location map" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <iframe class="contact-map" src="https://www.google.com/maps?q=Posh%20Beauty%20Studio%2C%20Kathmandu%2C%20Nepal&z=17&output=embed" loading="lazy" title="Posh Beauty Studio location map" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <a class="map-link" href="https://maps.app.goo.gl/ex5dkqBd7pjTXGv97" target="_blank" rel="noopener noreferrer">Open Map</a>
     </div>
   </div>
 </section>
@@ -895,6 +900,7 @@ footer ul a:hover{ color:var(--champagne); padding-left:6px; }
         <div class="footer-social">
           <a href="https://www.facebook.com/share/1EzfcAyAkZ/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Follow Posh Beauty Studio on Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
           <a href="https://www.instagram.com/poshbeautystudio.1" target="_blank" rel="noopener noreferrer" aria-label="Follow Posh Beauty Studio on Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+          <a href="https://www.tiktok.com/@posh.beauty.studio1?_r=1&_t=ZS-97r9PQr44kn" target="_blank" rel="noopener noreferrer" aria-label="Follow Posh Beauty Studio on TikTok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a>
           <a href="https://wa.me/9779851023825?text=Hi%20Posh%20Beauty%20Studio%2C%20I%27d%20like%20to%20book%20an%20appointment" target="_blank" rel="noopener noreferrer" aria-label="Message Posh Beauty Studio on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
         </div>
       </div>
